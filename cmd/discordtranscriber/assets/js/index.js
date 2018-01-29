@@ -7,20 +7,21 @@ sounds.micOn.volume = 0.2;
 sounds.micOff.volume = 0.3;
 
 // Create socket
-var socket = io()
+var socket = new ReconnectingWebSocket(`ws://${window.location.host}/websocket/`);
 
 var app = new Vue({
     el: "#app",
     data: {
-        guild: undefined,
+        avatar: "",
+        listening: false,    // If microphone should be listening
+        channelValid: false, // If the currently entered channelID is valid
+
+        user: undefined,
         channel: undefined,
 
-        guildID: "",
+        TTS: false,          // Use TTS (text to speech) messages in discord
         channelID: "",
-        voiceChannelID: "",
-        listening: false,
-        results: [],
-        avatar: "",
+        results: [],         // Transcript results
     },
     watch: {
         listening(val) {
@@ -40,40 +41,34 @@ var app = new Vue({
                 this.stopListening();
             }
         },
-        guildID(val) {
-            console.log("guildID: " + val);
-            socket.emit("guild", val.trim(), (resp) => {
-                console.log("updating guild to: " + resp);
-                this.guild = resp;
-            });
-        },
         channelID(val) {
-            console.log("channelID: " + val);
-            socket.emit("channel", val.trim(), (resp)=> {
-                console.log("updating channel to: " + resp);
-                this.channel = resp;
-            })
+            console.log("CHANNELID: " + val)
+            socket.send(JSON.stringify({
+                Name: "channel",
+                Data: val.trim(),
+            }));
         },
     },
     computed: {
-        getSpeechRecognition() {
+        hasSpeechRec() {
             return getSpeechRecognition();
         },
         rec() {
             let recognition = getSpeechRecognition();
             let sr = new recognition();
-            sr.continuous = true;
+
             sr.onresult = (res) => {
                 console.log(res);
                 let text = res.results[res.results.length - 1][0].transcript.trim();
-                this.results.push(text);
-                if (this.results.length >= 10) {
-                    this.results.shift();
-                }
-                socket.emit("send-text", {
-                    channelID: this.channelID,
-                    content: text,
-                });
+                this.log(text);
+                socket.send(JSON.stringify({
+                    Name: "send",
+                    Data: JSON.stringify({
+                        ChannelID: this.channelID,
+                        Content: text,
+                        TTS: this.TTS,
+                    }),
+                }));
             };
             sr.onerror = (err) => {
                 console.log(err);
@@ -96,13 +91,30 @@ var app = new Vue({
             console.log("Stopping speech recognition");
             this.rec.stop();
         },
+        log(text) {
+            this.results.push(text);
+            if (this.results.length >= 10) {
+                this.results.shift();
+            }
+        }
     },
 });
 
-// socket.emit("myAvatar", function (resp) {
-//     console.log("Setting avatar to " + resp);
-//     app.avatar = resp;
-// });
+socket.addEventListener('message', function (event) {
+    let ev = JSON.parse(event.data);
+    switch (ev.Name) {
+        case "valid_channel":
+            app.channelValid = JSON.parse(ev.Data); break;
+        case "avatar":
+            app.avatar = ev.Data; break;
+        case "channel":
+            app.channel = JSON.parse(ev.Data); break;
+        case "user":
+            app.user = JSON.parse(ev.Data); break;
+        default:
+            console.error(`ERROR: Invalid data sent from server: [${ev.Name}]`);
+    }
+});
 
 function getSpeechRecognition() {
     return window.SpeechRecognition ||

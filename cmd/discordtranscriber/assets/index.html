@@ -2,7 +2,7 @@
 
 <head>
     <title>Transcriber</title>
-    <script src="js/socketio.js"></script>
+    <script src="js/reconnecting-websocket.min.js"></script>
     <script src="js/vue.js"></script>
     <link rel="stylesheet" type="text/css" href="css/master.css">
 </head>
@@ -10,7 +10,7 @@
 <body>
     <div id="app">
         <!-- Check if speech recognition is supported -->
-        <div v-if="!getSpeechRecognition">
+        <div v-if="!hasSpeechRec">
             <h2>Your browser does not support speech recognition</h2>
             <p>Chrome currently supports the SpeechRecognition API</p>
         </div>
@@ -20,27 +20,25 @@
                     <label class="label">Toggle microphone</label>
                     <div @click="listening = !listening" :class="['mic', listening?'on':'off']"></div>
                 </div>
-                <div>
-                    <img v-if="avatar" :src="avatar" class="avatar">
+                <div v-if="user" style="text-align: center">
+                    <label class="label">{{user.username}}</label>
+                    <!-- <img :src="avatar" class="avatar"> -->
                 </div>
             </div>
 
-
             <!-- Discord information selection -->
             <div class='form'>
-                <div class="grid">
-                    <div class="group">
-                        <label class="label">Guild</label>
-                        <input :class="{valid: guild}" id="guildID" type="text" v-model="guildID" placeholder="guild id">
-                    </div>
-                    <div class="group">
-                        <label class="label">Text channel</label>
-                        <input :class="{valid: channel}" id="channelID" type="text" v-model="channelID" placeholder="text channel id">
-                    </div>
-                    <!-- <div class="group">
-                        <label class="label">Voice channel</label>
-                        <input id="voiceChannelID" type="text" v-model="voiceChannelID" placeholder="voice channel id">
-                    </div> -->
+                <div class="group">
+                    <label class="label">Text channel{{channel ? " ( " + channel.name + " ) ": ""}}</label>
+                    <input :class="{valid: channel}" id="channelID" type="text" v-model="channelID" placeholder="Enter a valid text channel ID">
+                </div>
+                <div class="group">
+                    <label class="label">Modifiers</label>
+                    <label class="checkbox">Text to speech
+                        <input v-model="TTS" type="checkbox">
+                        <span class="checkmark"></span>
+                    </label>
+                    <br>
                 </div>
             </div>
 
