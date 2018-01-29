@@ -7,6 +7,7 @@ import (
 	"github.com/gorilla/websocket"
 )
 
+// stringify is a shortcut for marshalling structs to a string
 func stringify(v interface{}) string {
 	b, _ := json.Marshal(v)
 	if b == nil {
@@ -15,6 +16,9 @@ func stringify(v interface{}) string {
 	return string(b)
 }
 
+// writeEvent provides a shortcut for sending websocket events
+//     conn : websocket connection
+//     data : data to send
 func writeEvent(conn *websocket.Conn, name string, data string) error {
 	return conn.WriteJSON(wsmux.Event{
 		Name: name,

@@ -24,8 +24,8 @@ var app = new Vue({
         results: [],         // Transcript results
     },
     watch: {
-        listening(val) {
-            if (val) {
+        listening(val) { 
+            if (val) { // Toggle microphone
                 sounds.micOn.play();
                 if (!sounds.micOff.paused) {
                     sounds.micOff.pause();
@@ -41,7 +41,7 @@ var app = new Vue({
                 this.stopListening();
             }
         },
-        channelID(val) {
+        channelID(val) { // Request channel information from server
             console.log("CHANNELID: " + val)
             socket.send(JSON.stringify({
                 Name: "channel",
@@ -53,7 +53,7 @@ var app = new Vue({
         hasSpeechRec() {
             return getSpeechRecognition();
         },
-        rec() {
+        rec() { // Create speech recognition object
             let recognition = getSpeechRecognition();
             let sr = new recognition();
 
@@ -73,7 +73,7 @@ var app = new Vue({
             sr.onerror = (err) => {
                 console.log(err);
             };
-            // Begin listening again once a sentence has been recognized
+            // Restart recognition after a sentence is recognized.
             sr.onend = () => {
                 if (app.listening) {
                     sr.start();
@@ -91,7 +91,7 @@ var app = new Vue({
             console.log("Stopping speech recognition");
             this.rec.stop();
         },
-        log(text) {
+        log(text) { 
             this.results.push(text);
             if (this.results.length >= 10) {
                 this.results.shift();

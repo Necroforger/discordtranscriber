@@ -11,7 +11,7 @@ import (
 
 var upgrader = websocket.Upgrader{}
 
-// Server server session
+// Server ...
 type Server struct {
 	httpserver *http.Server
 	Client     *discordgo.Session
@@ -59,7 +59,9 @@ func (s *Server) ListenAndServe() error {
 	return s.httpserver.ListenAndServe()
 }
 
-// ListenAndServeTLS calls the underlying http server ListenAndServeTLS
+// ListenAndServeTLS calls the underlying http server ListenAndServeTLSs
+//     certfile : certificate file
+//     keyfile  : key file
 func (s *Server) ListenAndServeTLS(certfile, keyfile string) error {
 	return s.httpserver.ListenAndServeTLS(certfile, keyfile)
 }
