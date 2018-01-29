@@ -21,6 +21,14 @@ var (
 func main() {
 	flag.Parse()
 
+	// Alternative flags
+	if *username == "" {
+		*username = flag.Arg(0)
+	}
+	if *password == "" {
+		*password = flag.Arg(1)
+	}
+
 	// Login to discord
 	c, err := discordgo.New(*username, *password, *token)
 	if err != nil {
