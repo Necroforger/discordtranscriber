@@ -17,7 +17,7 @@ func (s *Server) wsValidChannel(conn *websocket.Conn, e wsmux.Event) {
 func (s *Server) wsChannel(conn *websocket.Conn, e wsmux.Event) {
 	channel, err := s.Client.State.Channel(e.Data)
 	if err != nil {
-		writeEvent(conn, "channel", "''")
+		writeEvent(conn, "channel", `""`)
 	}
 	writeEvent(conn, "channel", stringify(channel))
 }

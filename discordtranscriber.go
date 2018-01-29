@@ -103,6 +103,8 @@ func (s *Server) readConnection(conn *websocket.Conn) error {
 			return err
 		}
 
+		s.log("websocket request: ", e.Name, e.Data)
+
 		err = s.execRequest(conn, e)
 		if err != nil {
 			s.log("readConnection execRequest err: ", err)
@@ -111,6 +113,5 @@ func (s *Server) readConnection(conn *websocket.Conn) error {
 }
 
 func (s *Server) execRequest(conn *websocket.Conn, e wsmux.Event) error {
-	s.log("websocket request: ", e.Name, e.Data)
 	return s.WSRouter.Execute(conn, e)
 }
