@@ -4,9 +4,9 @@ import (
 	"log"
 	"net/http"
 
-	"github.com/Necroforger/discordtranscriber/wsmux"
 	"github.com/bwmarrin/discordgo"
 	"github.com/gorilla/websocket"
+	"gitlab.com/koishi/discordtranscriber/wsmux"
 )
 
 var upgrader = websocket.Upgrader{}

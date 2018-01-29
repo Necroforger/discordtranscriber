@@ -5,8 +5,8 @@ import (
 	"log"
 	"net/http"
 
-	"github.com/Necroforger/discordtranscriber"
 	"github.com/bwmarrin/discordgo"
+	"gitlab.com/koishi/discordtranscriber"
 )
 
 // Flags

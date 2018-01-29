@@ -3,8 +3,8 @@ package discordtranscriber
 import (
 	"fmt"
 
-	"github.com/Necroforger/discordtranscriber/wsmux"
 	"github.com/gorilla/websocket"
+	"gitlab.com/koishi/discordtranscriber/wsmux"
 )
 
 // ValidChannel returns true if a channel is valid
