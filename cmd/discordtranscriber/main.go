@@ -44,6 +44,7 @@ func main() {
 	log.Println("Recieved ready data")
 
 	log.Println("Server listening on port [", *port, "]")
+	log.Println("Visit http://localhost:" + *port + "/ in a WebSpeech API supporting browser (chrome)")
 	server := discordtranscriber.NewServer(c, *port, http.Dir(*dir))
 	server.Log = true // Enable logging
 	log.Fatal(server.ListenAndServe())
