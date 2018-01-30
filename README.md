@@ -16,6 +16,8 @@ If you launch the executeable by double clicking on it or by executing without a
 
 ## Flags
 `args <username> <password>`
+
+
 | Flag | Description                 |
 |------|-----------------------------|
 | u    | Username                    |
