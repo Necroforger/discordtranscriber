@@ -1,7 +1,7 @@
 # Discordtranscriber
 
 ## Installing
-`go get -u gitlab.com/koishi/discordtranscriber/...`
+`go get -u github.com/Necroforger/discordtranscriber/...`
 
 ## Usage
 

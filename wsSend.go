@@ -1,8 +1,8 @@
 package discordtranscriber
 
 import (
+	"github.com/Necroforger/discordtranscriber/wsmux"
 	"github.com/gorilla/websocket"
-	"gitlab.com/koishi/discordtranscriber/wsmux"
 )
 
 // SendRequest is data from a SendRequest

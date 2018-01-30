@@ -9,8 +9,8 @@ import (
 	"os"
 	"strings"
 
+	"github.com/Necroforger/discordtranscriber"
 	"github.com/bwmarrin/discordgo"
-	"gitlab.com/koishi/discordtranscriber"
 )
 
 // Generate bindata

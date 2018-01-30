@@ -3,8 +3,8 @@ package discordtranscriber
 import (
 	"encoding/json"
 
+	"github.com/Necroforger/discordtranscriber/wsmux"
 	"github.com/gorilla/websocket"
-	"gitlab.com/koishi/discordtranscriber/wsmux"
 )
 
 // stringify is a shortcut for marshalling structs to a string
