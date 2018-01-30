@@ -9,6 +9,9 @@ import (
 	"gitlab.com/koishi/discordtranscriber"
 )
 
+// Generate bindata
+//go:generate go-bindata-assetfs assets/...
+
 // Flags
 var (
 	port     = flag.String("port", "8100", "server port")
@@ -17,9 +20,6 @@ var (
 	token    = flag.String("t", "", "discord token")
 	dir      = flag.String("d", "", "asset directory")
 )
-
-// Generate bindata
-//go:generate go-bindata-assetfs assets/...
 
 func main() {
 	flag.Parse()
