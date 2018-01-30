@@ -15,8 +15,11 @@ var (
 	username = flag.String("u", "", "discord username")
 	password = flag.String("p", "", "discord password")
 	token    = flag.String("t", "", "discord token")
-	dir      = flag.String("d", "assets", "asset directory")
+	dir      = flag.String("d", "", "asset directory")
 )
+
+// Generate bindata
+//go:generate go-bindata-assetfs assets/...
 
 func main() {
 	flag.Parse()
@@ -27,6 +30,14 @@ func main() {
 	}
 	if *password == "" {
 		*password = flag.Arg(1)
+	}
+
+	// Set the fileSystem
+	var fileSystem http.FileSystem
+	if *dir != "" {
+		fileSystem = http.Dir(*dir)
+	} else {
+		fileSystem = assetFS()
 	}
 
 	// Login to discord
@@ -53,7 +64,7 @@ func main() {
 
 	log.Println("Server listening on port [", *port, "]")
 	log.Println("Visit http://localhost:" + *port + "/ in a WebSpeech API supporting browser (chrome)")
-	server := discordtranscriber.NewServer(c, *port, http.Dir(*dir))
+	server := discordtranscriber.NewServer(c, *port, fileSystem)
 	server.Log = true // Enable logging
 	log.Fatal(server.ListenAndServe())
 }
