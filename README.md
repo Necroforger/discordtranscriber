@@ -29,9 +29,9 @@ If you launch the executeable by double clicking on it or by executing without a
 ## Building
 
 ### Dependencies:
-| Dependency         | Reason                                              |
-|--------------------|-----------------------------------------------------|
-| go-bindata         | Embedding webui inside executeable                  |
-| go-bindata-assetfs | implementing http.FileSystem interface with bindata |
+| Dependency                                                          | Reason                                              |
+|---------------------------------------------------------------------|-----------------------------------------------------|
+| [go-bindata](https://github.com/jteeuwen/go-bindata)                | Embedding webui inside executeable                  |
+| [go-bindata-assetfs](https://github.com/elazarl/go-bindata-assetfs) | implementing http.FileSystem interface with bindata |
 
 run `go generate` then `go build`
