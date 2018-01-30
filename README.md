@@ -11,6 +11,9 @@
 ### With a token
 `discordtranscriber -t "Bot token"`
 
+### Interactive
+If you launch the executeable by double clicking on it or by executing without arguments It will prompt you to enter your credentials.
+
 ## Flags
 `args <username> <password>`
 | Flag | Description                 |
