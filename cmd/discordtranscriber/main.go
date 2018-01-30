@@ -1,9 +1,13 @@
 package main
 
 import (
+	"bufio"
 	"flag"
+	"fmt"
 	"log"
 	"net/http"
+	"os"
+	"strings"
 
 	"github.com/bwmarrin/discordgo"
 	"gitlab.com/koishi/discordtranscriber"
@@ -21,6 +25,28 @@ var (
 	dir      = flag.String("d", "", "asset directory")
 )
 
+// interactive input mode
+func interactive() {
+	rd := bufio.NewReader(os.Stdin)
+	option := strings.TrimSpace(queryLine(rd, "[1] Username and password\n[2] Token\nenter an option: "))
+	switch option {
+	case "1":
+		*username = strings.TrimSpace(queryLine(rd, "Username: "))
+		*password = strings.TrimSpace(queryLine(rd, "Password: "))
+	case "2":
+		*token = strings.TrimSpace(queryLine(rd, "Token: "))
+	}
+}
+
+func queryLine(rd *bufio.Reader, query string) string {
+	fmt.Printf(query)
+	line, err := rd.ReadString('\n')
+	if err != nil {
+		log.Println(err)
+	}
+	return line
+}
+
 func main() {
 	flag.Parse()
 
@@ -30,6 +56,11 @@ func main() {
 	}
 	if *password == "" {
 		*password = flag.Arg(1)
+	}
+
+	// Enter interactive mode if login credentials are not set
+	if *username == "" && *password == "" && *token == "" {
+		interactive()
 	}
 
 	// Set the fileSystem
