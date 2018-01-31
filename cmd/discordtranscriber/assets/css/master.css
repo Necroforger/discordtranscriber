@@ -61,6 +61,10 @@ body {
     width: 200px;
     margin-bottom: 23px;
 }
+#id-fields {
+    display: grid;
+    grid-template-columns: 250px 1fr;
+}
 .label {
     display: block;
     font-size: 11px;

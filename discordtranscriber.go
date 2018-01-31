@@ -6,6 +6,7 @@ import (
 
 	"github.com/bwmarrin/discordgo"
 	"github.com/gorilla/websocket"
+	"gitlab.com/koishi/discordtranscriber/player"
 	"gitlab.com/koishi/discordtranscriber/wsmux"
 )
 
@@ -16,6 +17,7 @@ type Server struct {
 	httpserver *http.Server
 	Client     *discordgo.Session
 	WSRouter   *wsmux.Router
+	Player     *player.Player
 	Log        bool
 }
 
@@ -29,6 +31,7 @@ func NewServer(client *discordgo.Session, p string, assets http.FileSystem) *Ser
 	s := &Server{
 		Client:   client,
 		WSRouter: wsmux.NewRouter(),
+		Player:   player.NewPlayer(),
 		Log:      false,
 	}
 
@@ -52,6 +55,7 @@ func (s *Server) addHandlers() {
 	r.On("send", s.wsSend)
 	r.On("channel", s.wsChannel)
 	r.On("valid_channel", s.wsValidChannel)
+	r.On("voice_channel", s.wsVoiceChannel)
 }
 
 // ListenAndServe calls the underlying http server ListenAndServe
