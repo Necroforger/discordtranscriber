@@ -28,14 +28,33 @@
 
             <!-- Discord information selection -->
             <div class='form'>
-                <div class="group">
-                    <label class="label">Text channel{{channel ? " ( " + channel.name + " ) ": ""}}</label>
-                    <input :class="{valid: channel}" id="channelID" type="text" v-model="channelID" placeholder="Enter a valid text channel ID">
+                <!-- ID Fields -->
+                <div id="id-fields">
+                    <div class="group">
+                        <label class="label">Text channel{{channel ? " ( " + channel.name + " ) ": ""}}</label>
+                        <input :class="{valid: channel}" id="channelID" type="text" v-model="channelID" placeholder="Enter a valid text channel ID">
+                    </div>
+                    <!-- <div class="group">
+                        <label class="label">Guild{{guild ? " ( " + guild.name + " ) ": ""}}</label>
+                        <input :class="{valid: guild}" id="channelID" type="text" v-model="guildID" placeholder="Enter a valid guild ID">
+                    </div> -->
+                    <div class="group">
+                        <label class="label">Voice channel{{voiceChannel ? " ( " + voiceChannel.name + " ) ": ""}}</label>
+                        <input :class="{valid: voiceChannel}" id="channelID" type="text" v-model="voiceChannelID" placeholder="Enter a valid voice channel ID">
+                    </div>
                 </div>
                 <div class="group">
-                    <label class="label">Modifiers</label>
+                    <label class="label">Options</label>
+                    <label class="checkbox">Text chat
+                            <input v-model="useText" type="checkbox">
+                            <span class="checkmark"></span>
+                        </label>
                     <label class="checkbox">Text to speech
                         <input v-model="TTS" type="checkbox">
+                        <span class="checkmark"></span>
+                    </label>
+                    <label v-if="voiceChannel" class="checkbox">Espeak voice synthesis
+                        <input v-model="useVoice" type="checkbox">
                         <span class="checkmark"></span>
                     </label>
                     <br>

@@ -9,6 +9,14 @@ sounds.micOff.volume = 0.3;
 // Create socket
 var socket = new ReconnectingWebSocket(`ws://${window.location.host}/websocket/`);
 
+function sendEvent(name, data) {
+    socket.send(JSON.stringify({
+        Name: name,
+        Data: data,
+    }));
+}
+
+
 var app = new Vue({
     el: "#app",
     data: {
@@ -16,15 +24,22 @@ var app = new Vue({
         listening: false,    // If microphone should be listening
         channelValid: false, // If the currently entered channelID is valid
 
+        useVoice: false,     // Use voice synthesis
+        useText: true,
+
         user: undefined,
         channel: undefined,
+        guild: undefined,
+        voiceChannel: undefined,
 
         TTS: false,          // Use TTS (text to speech) messages in discord
         channelID: "",
+        guildID: "",
+        voiceChannelID: "",
         results: [],         // Transcript results
     },
     watch: {
-        listening(val) { 
+        listening(val) {
             if (val) { // Toggle microphone
                 sounds.micOn.play();
                 if (!sounds.micOff.paused) {
@@ -43,10 +58,14 @@ var app = new Vue({
         },
         channelID(val) { // Request channel information from server
             console.log("CHANNELID: " + val)
-            socket.send(JSON.stringify({
-                Name: "channel",
-                Data: val.trim(),
-            }));
+            sendEvent("channel", val.trim());
+        },
+        voiceChannelID(val) { // request voice channel information from server
+            console.log("VOICE CHANNEL ID: " + val);
+            sendEvent("voice_channel", val.trim());
+        },
+        voiceChannel(val) {
+            this.guildID = val.guild_id;
         },
     },
     computed: {
@@ -61,13 +80,14 @@ var app = new Vue({
                 console.log(res);
                 let text = res.results[res.results.length - 1][0].transcript.trim();
                 this.log(text);
-                socket.send(JSON.stringify({
-                    Name: "send",
-                    Data: JSON.stringify({
-                        ChannelID: this.channelID,
-                        Content: text,
-                        TTS: this.TTS,
-                    }),
+                sendEvent("send", JSON.stringify({
+                    ChannelID: this.channelID,
+                    GuildID: this.guildID,
+                    VoiceChannelID: this.voiceChannelID,
+                    Content: text,
+                    TTS: this.TTS,
+                    Text: (this.useText && (!!this.channel)),
+                    Voice: (this.useVoice && (!!this.voiceChannel)),
                 }));
             };
             sr.onerror = (err) => {
@@ -91,7 +111,7 @@ var app = new Vue({
             console.log("Stopping speech recognition");
             this.rec.stop();
         },
-        log(text) { 
+        log(text) {
             this.results.push(text);
             if (this.results.length >= 10) {
                 this.results.shift();
@@ -109,6 +129,8 @@ socket.addEventListener('message', function (event) {
             app.avatar = ev.Data; break;
         case "channel":
             app.channel = JSON.parse(ev.Data); break;
+        case "voice_channel":
+            app.voiceChannel = JSON.parse(ev.Data); break;
         case "user":
             app.user = JSON.parse(ev.Data); break;
         default:
