@@ -1,7 +1,7 @@
 # Discordtranscriber
 ![img](https://i.imgur.com/BygMSrr.png)
 ## Installing
-`go get -u github.com/Necroforger/discordtranscriber/...`
+`go get -u gitlab.com/Necroforger/discordtranscriber/cmd/...`
 
 ### Dependencies for voice synthesis
 The following programs are required for voice synthesis to work
