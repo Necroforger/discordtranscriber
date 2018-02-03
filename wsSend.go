@@ -42,7 +42,7 @@ func (s *Server) wsSend(conn *websocket.Conn, e wsmux.Event) {
 
 	// If we are using a voice channel
 	if sr.Voice && sr.VoiceChannelID != "" {
-		s.PlayVoice(sr.GuildID, sr.VoiceChannelID, NewVoiceOptions(), sr.Content)
+		s.PlayVoice(sr.GuildID, sr.VoiceChannelID, &sr.VoiceOptions, sr.Content)
 	}
 }
 

@@ -1,5 +1,5 @@
 # Discordtranscriber
-![img](https://i.imgur.com/BygMSrr.png)
+![img](https://i.imgur.com/wYzNKKJ.png)
 ## Installing
 `go get -u gitlab.com/koishi/discordtranscriber/cmd/...`
 
