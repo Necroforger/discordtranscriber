@@ -20,11 +20,11 @@ body {
     z-index: -1;
     position: absolute;
     width: 100%;
-    pointer-events: none;
+    height: 100%;
     top: 0px;
     left: 0px;
-    filter: blur(5px);
-    filter: brightness(0.2);
+    pointer-events: none;
+    filter: blur(5px) brightness(0.2);
 }
 .mic {
     user-select: none;

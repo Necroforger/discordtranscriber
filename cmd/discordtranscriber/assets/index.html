@@ -9,7 +9,7 @@
 
 <body>
     <div id="app">
-        <img id="avatar-background" v-if="avatar" :src="avatar">
+        <div v-if="avatar" id="avatar-background" :style="'backgroundImage: url(\'' + avatar + '\');'"></div>
         <!-- Check if speech recognition is supported -->
         <div v-if="!hasSpeechRec">
             <h2>Your browser does not support speech recognition</h2>
@@ -47,9 +47,9 @@
                 <label class="label">Options</label>
                 <div id="modifiers" class="group">
                     <label class="checkbox">Text chat
-                            <input v-model="useText" type="checkbox">
-                            <span class="checkmark"></span>
-                        </label>
+                        <input v-model="useText" type="checkbox">
+                        <span class="checkmark"></span>
+                    </label>
                     <label class="checkbox">Text to speech
                         <input v-model="TTS" type="checkbox">
                         <span class="checkmark"></span>
