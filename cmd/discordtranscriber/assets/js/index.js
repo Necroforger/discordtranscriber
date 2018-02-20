@@ -1,4 +1,4 @@
-var sounds = {
+const sounds = {
     micOff: new Audio("/audio/mic-off.wav"),
     micOn: new Audio("/audio/mic-on.wav"),
 }
@@ -7,7 +7,7 @@ sounds.micOn.volume = 0.2;
 sounds.micOff.volume = 0.3;
 
 // Create socket
-var socket = new ReconnectingWebSocket(`ws://${window.location.host}/websocket/`);
+const socket = new ReconnectingWebSocket(`ws://${window.location.host}/websocket/`);
 
 function sendEvent(name, data) {
     socket.send(JSON.stringify({
@@ -16,8 +16,16 @@ function sendEvent(name, data) {
     }));
 }
 
+function DefaultVoiceOptions() {
+    return {
+        Voice: "en-US+whisper",
+        Pitch: "50",
+        Speed: "130",
+        Amplitude: "100",
+    };
+}
 
-var app = new Vue({
+const app = new Vue({
     el: "#app",
     data: {
         avatar: "",
@@ -31,6 +39,8 @@ var app = new Vue({
         channel: undefined,
         guild: undefined,
         voiceChannel: undefined,
+
+        VoiceOptions: DefaultVoiceOptions(),
 
         TTS: false,          // Use TTS (text to speech) messages in discord
         channelID: "",
@@ -80,15 +90,7 @@ var app = new Vue({
                 console.log(res);
                 let text = res.results[res.results.length - 1][0].transcript.trim();
                 this.log(text);
-                sendEvent("send", JSON.stringify({
-                    ChannelID: this.channelID,
-                    GuildID: this.guildID,
-                    VoiceChannelID: this.voiceChannelID,
-                    Content: text,
-                    TTS: this.TTS,
-                    Text: (this.useText && (!!this.channel)),
-                    Voice: (this.useVoice && (!!this.voiceChannel)),
-                }));
+                this.send(text);
             };
             sr.onerror = (err) => {
                 console.log(err);
@@ -103,6 +105,21 @@ var app = new Vue({
         }
     },
     methods: {
+        resetVoiceOptions() {
+            this.VoiceOptions = DefaultVoiceOptions();
+        },
+        send(text) {
+            sendEvent("send", JSON.stringify({
+                ChannelID: this.channelID,
+                GuildID: this.guildID,
+                VoiceChannelID: this.voiceChannelID,
+                Content: text,
+                VoiceOptions: this.VoiceOptions,
+                TTS: this.TTS,
+                Text: (this.useText && (!!this.channel)),
+                Voice: (this.useVoice && (!!this.voiceChannel)),
+            }));
+        },
         startListening() {
             console.log("Starting speech recognition");
             this.rec.start();
@@ -116,7 +133,7 @@ var app = new Vue({
             if (this.results.length >= 10) {
                 this.results.shift();
             }
-        }
+        },
     },
 });
 

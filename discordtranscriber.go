@@ -95,7 +95,7 @@ func (s *Server) sendInitialData(conn *websocket.Conn) error {
 	}
 
 	wr("user", stringify(s.Client.State.User))
-	wr("avatar", s.Client.State.User.AvatarURL(""))
+	wr("avatar", s.Client.State.User.AvatarURL("1024"))
 
 	return e
 }

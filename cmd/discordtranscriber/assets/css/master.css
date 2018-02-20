@@ -16,6 +16,16 @@ body {
   display: grid;
   grid-template-columns: 3fr 1fr;
 }
+#avatar-background {
+    z-index: -1;
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    top: 0px;
+    left: 0px;
+    pointer-events: none;
+    filter: blur(5px) brightness(0.2);
+}
 .mic {
     user-select: none;
     width: 50px;
@@ -64,6 +74,25 @@ body {
 #id-fields {
     display: grid;
     grid-template-columns: 250px 1fr;
+}
+#modifiers {
+    padding-bottom: 20px;
+}
+#voice-options-reset {
+    width: 50px;
+    text-decoration: underline;
+}
+#voice-options-reset:hover {
+    cursor: pointer;
+    color: gray;
+}
+#voice-options {
+    display: grid;
+    grid-template-columns: repeat(3, 250px);
+}
+#voice-options-labels {
+    display: grid;
+    grid-template-columns: 4fr 1fr;
 }
 .label {
     display: block;

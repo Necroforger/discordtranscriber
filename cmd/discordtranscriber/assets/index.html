@@ -9,6 +9,7 @@
 
 <body>
     <div id="app">
+        <div v-if="avatar" id="avatar-background" :style="'backgroundImage: url(\'' + avatar + '\');'"></div>
         <!-- Check if speech recognition is supported -->
         <div v-if="!hasSpeechRec">
             <h2>Your browser does not support speech recognition</h2>
@@ -43,21 +44,43 @@
                         <input :class="{valid: voiceChannel}" id="channelID" type="text" v-model="voiceChannelID" placeholder="Enter a valid voice channel ID">
                     </div>
                 </div>
-                <div class="group">
-                    <label class="label">Options</label>
+                <label class="label">Options</label>
+                <div id="modifiers" class="group">
                     <label class="checkbox">Text chat
-                            <input v-model="useText" type="checkbox">
-                            <span class="checkmark"></span>
-                        </label>
+                        <input v-model="useText" type="checkbox">
+                        <span class="checkmark"></span>
+                    </label>
                     <label class="checkbox">Text to speech
                         <input v-model="TTS" type="checkbox">
                         <span class="checkmark"></span>
                     </label>
-                    <label v-if="voiceChannel" class="checkbox">Espeak voice synthesis
+                    <label class="checkbox">Espeak voice synthesis
                         <input v-model="useVoice" type="checkbox">
                         <span class="checkmark"></span>
                     </label>
-                    <br>
+                </div>
+
+                <div id="voice-options-labels">
+                    <label class="label">Voice synthesis options (requires espeak)</label>
+                    <label @click="resetVoiceOptions" id="voice-options-reset" class="label">reset</label>
+                </div>
+                <div id="voice-options">
+                    <div class="group">
+                        <label class="label">Voice</label>
+                        <input type="text" v-model="VoiceOptions.Voice">
+                    </div>
+                    <div class="group">
+                        <label class="label">Pitch</label>
+                        <input type="text" v-model="VoiceOptions.Pitch">
+                    </div>
+                    <div class="group">
+                        <label class="label">Speed</label>
+                        <input type="text" v-model="VoiceOptions.Speed">
+                    </div>
+                    <div class="group">
+                        <label class="label">Amplitude</label>
+                        <input type="text" v-model="VoiceOptions.Amplitude">
+                    </div>
                 </div>
             </div>
 
